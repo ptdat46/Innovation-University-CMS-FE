@@ -10,6 +10,7 @@ export default function Navbar() {
     { path: '/news', label: 'Tin tức' },
     { path: '/events', label: 'Sự kiện' },
     { path: '/clubs', label: 'CLB' },
+    { path: '/student-life', label: 'Đời sống sinh viên' },
   ];
 
   return (
