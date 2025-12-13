@@ -1,4 +1,9 @@
-export default function ContentSection({ title, icon, linkPath = '#' }) {
+export default function ContentSection({ title, icon, linkPath = '#', posts = [] }) {
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('vi-VN');
+  };
+
   return (
     <div className="py-8">
       <div className="max-w-[1200px] mx-auto px-5">
@@ -13,25 +18,35 @@ export default function ContentSection({ title, icon, linkPath = '#' }) {
 
         {/* Content Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-2">
-          {[1, 2, 3, 4].map((item) => (
-            <div key={item} className="bg-gray-50 rounded-lg overflow-hidden hover:shadow-lg transition-shadow">
-              {/* Image Placeholder */}
-              <div 
-                className="w-full h-48 bg-linear-to-br from-blue-400 to-blue-600"
-                style={{ background: `linear-gradient(135deg, #3b82f6 0%, #1e40af 100%)` }}
-              ></div>
+          {posts.slice(0, 4).map((post) => (
+            <div key={post.id} className="bg-gray-50 rounded-lg overflow-hidden hover:shadow-lg transition-shadow cursor-pointer">
+              {/* Image */}
+              <div className="w-full h-48 overflow-hidden">
+                {post.featured_image ? (
+                  <img 
+                    src={post.featured_image} 
+                    alt={post.title}
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <div 
+                    className="w-full h-full"
+                    style={{ background: `linear-gradient(135deg, #3b82f6 0%, #1e40af 100%)` }}
+                  ></div>
+                )}
+              </div>
 
               {/* Content */}
               <div className="p-4">
                 <h3 className="font-semibold text-gray-900 mb-2 line-clamp-2">
-                  {title} - Bài viết số {item}
+                  {post.title}
                 </h3>
                 <p className="text-gray-600 text-sm mb-3 line-clamp-2">
-                  Mô tả ngắn gọn về nội dung bài viết hoặc sự kiện
+                  {post.excerpt}
                 </p>
                 <div className="flex items-center justify-between text-sm">
-                  <span className="text-gray-500">20/12/2025</span>
-                  <span className="text-gray-400">Nguyễn Văn A</span>
+                  <span className="text-gray-500">{formatDate(post.created_at)}</span>
+                  <span className="text-gray-400">{post.views} lượt xem</span>
                 </div>
               </div>
             </div>

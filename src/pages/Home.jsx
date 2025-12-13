@@ -5,13 +5,22 @@ import ContentSection from '../components/ContentSection.jsx';
 import banner from '../assets/banner.png';
 
 export default function Homepage() {
-    const [posts, setPosts] = useState([]);
+    const [news, setNews] = useState([]);
+    const [events, setEvents] = useState([]);
+    const [clubs, setClubs] = useState([]);
+    const [studentLife, setStudentLife] = useState([]);
 
     useEffect(() => {
         const fetchPosts = async () => {
             try {
                 const response = await api.get('/');
-                setPosts(response.data);
+                console.log('API response:', response.data);
+                
+                const postsData = response.data.posts || {};
+                setNews(postsData.news || []);
+                setEvents(postsData.events || []);
+                setClubs(postsData.clubs || []);
+                setStudentLife(postsData.student_life || []);
             } catch (error) {
                 console.error('Error fetching posts:', error);
             }
@@ -19,7 +28,7 @@ export default function Homepage() {
 
         fetchPosts();
     }, []);
-    
+
     return (
         <div>
             <Nav />
@@ -36,10 +45,10 @@ export default function Homepage() {
             <div className="h-1 bg-gray-300"></div>
 
             {/* Content Sections */}
-            <ContentSection title="Tin tức & Thông báo" icon="📰" linkPath="/news" />
-            <ContentSection title="Sự kiện & Marketing" icon="📢" linkPath="/events" />
-            <ContentSection title="Hoạt động CLB" icon="🎭" linkPath="/clubs" />
-            <ContentSection title="Đời sống Sinh viên" icon="🎓" linkPath="/student-life" />
+            <ContentSection title="Tin tức & Thông báo" icon="📰" linkPath="/news" posts={news} />
+            <ContentSection title="Sự kiện & Marketing" icon="📢" linkPath="/events" posts={events} />
+            <ContentSection title="Hoạt động CLB" icon="🎭" linkPath="/clubs" posts={clubs} />
+            <ContentSection title="Đời sống Sinh viên" icon="🎓" linkPath="/student-life" posts={studentLife} />
         </div>
     );
 }
