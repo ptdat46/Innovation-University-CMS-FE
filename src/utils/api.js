@@ -3,7 +3,7 @@ import axios from 'axios';
 // import { setCookie, getCookie, removeCookie } from './cookie';
 import Cookies from 'js-cookie';
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000/api';
+const API_BASE_URL = 'http://localhost:8000/api';
 
 // Tạo axios instance
 const apiClient = axios.create({
@@ -77,13 +77,6 @@ export const api = {
 
 export const setAuthToken = (token) => {
     Cookies.set('authToken', token, {
-        expires: 7,
-        path: '/', 
-    });
-}
-
-export const setAuthRole = (role) => {
-    Cookies.set('authRole', role, {
         expires: 7,
         path: '/', 
     });

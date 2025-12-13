@@ -5,6 +5,21 @@ import ContentSection from '../components/ContentSection.jsx';
 import banner from '../assets/banner.png';
 
 export default function Homepage() {
+    const [posts, setPosts] = useState([]);
+
+    useEffect(() => {
+        const fetchPosts = async () => {
+            try {
+                const response = await api.get('/');
+                setPosts(response.data);
+            } catch (error) {
+                console.error('Error fetching posts:', error);
+            }
+        };
+
+        fetchPosts();
+    }, []);
+    
     return (
         <div>
             <Nav />
