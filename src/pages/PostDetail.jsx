@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import { api } from '../utils/api';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
+import { api, getAuthToken } from '../utils/api';
 import Nav from '../components/Navbar.jsx';
 import EditorJsRenderer from '../components/EditorJsRenderer.jsx';
 import banner from '../assets/big-banner.png';
@@ -8,17 +8,49 @@ import banner from '../assets/big-banner.png';
 export default function PostDetail() {
     const { id } = useParams();
     const navigate = useNavigate();
+    const location = useLocation();
     const [post, setPost] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [liked, setLiked] = useState(false);
+    const [likesCount, setLikesCount] = useState(0);
+    const [viewsCount, setViewsCount] = useState(0);
+    const [comments, setComments] = useState([]);
+    const [newComment, setNewComment] = useState('');
+    const [submittingComment, setSubmittingComment] = useState(false);
+    
+    const isWriterRoute = location.pathname.startsWith('/writer');
+    const token = getAuthToken();
+    const user = JSON.parse(localStorage.getItem('user') || '{}');
 
     useEffect(() => {
         const fetchPost = async () => {
             setLoading(true);
             setError(null);
             try {
-                const response = await api.get(`/posts/${id}`);
-                setPost(response.data.post);
+                console.log('Post ID from URL:', id);
+                const url = isWriterRoute ? `/writer/posts/${id}` : `/posts/${id}`;
+                console.log('API URL:', url);
+                const response = await api.get(url);
+                console.log('Post detail response:', response.data);
+                const postData = response.data.post;
+                setPost(postData);
+                console.log('Post ID:', postData.id, 'Post likes:', postData.likes, 'Post views:', postData.views);
+                setLikesCount(postData.likes || 0);
+                setViewsCount(postData.views || 0);
+                setLiked(response.data.liked || false);
+                
+                // Tự động tăng view nếu có token
+                if (token && !isWriterRoute) {
+                    const viewResponse = await api.post(`/posts/${id}/view`);
+                    if (viewResponse.data.views !== undefined) {
+                        setViewsCount(viewResponse.data.views);
+                    }
+                }
+                
+                // Lấy comments
+                const commentsRes = await api.get(`/posts/${id}/comments`);
+                setComments(commentsRes.data.comments || []);
             } catch (err) {
                 console.error('Error fetching post:', err);
                 setError(err.response?.data?.message || 'Không thể tải bài viết');
@@ -30,7 +62,7 @@ export default function PostDetail() {
         if (id) {
             fetchPost();
         }
-    }, [id]);
+    }, [id, isWriterRoute, token]);
 
     const formatDate = (dateString) => {
         const options = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' };
@@ -45,6 +77,45 @@ export default function PostDetail() {
             'student-life': 'Đời sống sinh viên'
         };
         return labels[category] || category;
+    };
+
+    const handleLike = async () => {
+        if (!token) {
+            alert('Vui lòng đăng nhập để thích bài viết');
+            return;
+        }
+        
+        try {
+            const response = await api.post(`/posts/${id}/like`);
+            setLiked(response.data.liked);
+            setLikesCount(response.data.likes);
+        } catch (err) {
+            console.error('Error liking post:', err);
+        }
+    };
+
+    const handleSubmitComment = async (e) => {
+        e.preventDefault();
+        if (!token) {
+            alert('Vui lòng đăng nhập để bình luận');
+            return;
+        }
+        
+        if (!newComment.trim()) return;
+        
+        setSubmittingComment(true);
+        try {
+            const response = await api.post(`/posts/${id}/comments`, {
+                content: newComment.trim()
+            });
+            setComments([response.data.comment, ...comments]);
+            setNewComment('');
+        } catch (err) {
+            console.error('Error posting comment:', err);
+            alert('Không thể gửi bình luận');
+        } finally {
+            setSubmittingComment(false);
+        }
     };
 
     if (loading) {
@@ -174,6 +245,111 @@ export default function PostDetail() {
                         {/* Post Content */}
                         <div className="prose prose-lg max-w-none">
                             <EditorJsRenderer data={post.content} />
+                        </div>
+
+                        {/* Like and View Stats */}
+                        <div className="mt-8 pt-6 border-t border-gray-200">
+                            <div className="flex items-center justify-between">
+                                <div className="flex items-center gap-6">
+                                    <button
+                                        onClick={handleLike}
+                                        disabled={!token}
+                                        className={`flex items-center gap-2 px-4 py-2 rounded-lg transition ${
+                                            liked 
+                                                ? 'bg-red-500 text-white hover:bg-red-600' 
+                                                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                                        } disabled:opacity-50 disabled:cursor-not-allowed`}
+                                    >
+                                        <span className="text-xl">{liked ? '❤️' : '🤍'}</span>
+                                        <span className="font-semibold">{likesCount} Thích</span>
+                                    </button>
+                                    <div className="flex items-center gap-2 text-gray-600">
+                                        <span className="text-xl">👁️</span>
+                                        <span className="font-semibold">{viewsCount} Lượt xem</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Comments Section */}
+                        <div className="mt-8 pt-6 border-t border-gray-200">
+                            <h2 className="text-2xl font-bold text-gray-900 mb-6">
+                                Bình luận ({comments.length})
+                            </h2>
+
+                            {/* Comment Form */}
+                            {token ? (
+                                <form onSubmit={handleSubmitComment} className="mb-8">
+                                    <div className="flex gap-3">
+                                        <div className="flex-shrink-0">
+                                            <div className="w-10 h-10 rounded-full bg-blue-500 flex items-center justify-center text-white font-semibold">
+                                                {user?.name?.[0]?.toUpperCase() || 'U'}
+                                            </div>
+                                        </div>
+                                        <div className="flex-1">
+                                            <textarea
+                                                value={newComment}
+                                                onChange={(e) => setNewComment(e.target.value)}
+                                                placeholder="Viết bình luận..."
+                                                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
+                                                rows="3"
+                                            />
+                                            <div className="mt-2 flex justify-end">
+                                                <button
+                                                    type="submit"
+                                                    disabled={submittingComment || !newComment.trim()}
+                                                    className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition disabled:opacity-50 disabled:cursor-not-allowed"
+                                                >
+                                                    {submittingComment ? 'Đang gửi...' : 'Gửi bình luận'}
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            ) : (
+                                <div className="mb-8 p-4 bg-gray-50 border border-gray-200 rounded-lg text-center">
+                                    <p className="text-gray-600">
+                                        Vui lòng{' '}
+                                        <button
+                                            onClick={() => navigate('/login')}
+                                            className="text-blue-600 hover:text-blue-800 font-semibold"
+                                        >
+                                            đăng nhập
+                                        </button>
+                                        {' '}để bình luận
+                                    </p>
+                                </div>
+                            )}
+
+                            {/* Comments List */}
+                            <div className="space-y-6">
+                                {comments.length > 0 ? (
+                                    comments.map((comment) => (
+                                        <div key={comment.id} className="flex gap-3">
+                                            <div className="flex-shrink-0">
+                                                <div className="w-10 h-10 rounded-full bg-gray-400 flex items-center justify-center text-white font-semibold">
+                                                    {comment.user?.name?.[0]?.toUpperCase() || 'U'}
+                                                </div>
+                                            </div>
+                                            <div className="flex-1">
+                                                <div className="bg-gray-50 rounded-lg p-4">
+                                                    <p className="font-semibold text-gray-900">
+                                                        {comment.user?.name || 'User'}
+                                                    </p>
+                                                    <p className="text-gray-700 mt-1">{comment.content}</p>
+                                                </div>
+                                                <p className="text-xs text-gray-500 mt-1 ml-4">
+                                                    {new Date(comment.created_at).toLocaleString('vi-VN')}
+                                                </p>
+                                            </div>
+                                        </div>
+                                    ))
+                                ) : (
+                                    <p className="text-center text-gray-500 py-8">
+                                        Chưa có bình luận nào. Hãy là người đầu tiên bình luận!
+                                    </p>
+                                )}
+                            </div>
                         </div>
                     </div>
                 </article>

@@ -1,9 +1,19 @@
-import { Link, useLocation } from 'react-router-dom';
-import { FiUser } from 'react-icons/fi';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { FiUser, FiLogOut } from 'react-icons/fi';
 import logo from '../assets/logo.png';
+import { getAuthToken, removeAuthToken } from '../utils/api';
 
 export default function Navbar() {
   const location = useLocation();
+  const navigate = useNavigate();
+  const token = getAuthToken();
+  const user = JSON.parse(localStorage.getItem('user') || '{}');
+
+  const handleLogout = () => {
+    removeAuthToken();
+    localStorage.removeItem('user');
+    navigate('/login');
+  };
 
   const menuItems = [
     { path: '/', label: 'Trang chủ' },
@@ -61,19 +71,40 @@ export default function Navbar() {
           })}
         </ul>
 
-        {/* Login Button */}
-        <Link
-          to="/login"
-          className="flex items-center bg-blue-800 hover:bg-blue-900 text-white rounded-md text-sm font-semibold transition-colors"
-          style={{
-            gap: '8px',
-            padding: '10px 28px',
-            textDecoration: 'none'
-          }}
-        >
-          <FiUser style={{ fontSize: '18px' }} />
-          <span>Đăng nhập</span>
-        </Link>
+        {/* Login/Logout Button */}
+        {!token ? (
+          <Link
+            to="/login"
+            className="flex items-center bg-blue-800 hover:bg-blue-900 text-white rounded-md text-sm font-semibold transition-colors"
+            style={{
+              gap: '8px',
+              padding: '10px 28px',
+              textDecoration: 'none'
+            }}
+          >
+            <FiUser style={{ fontSize: '18px' }} />
+            <span>Đăng nhập</span>
+          </Link>
+        ) : (
+          <div className="flex items-center gap-3">
+            <span className="text-gray-700 text-sm">
+              Xin chào, <strong>{user?.name || 'User'}</strong>
+            </span>
+            <button
+              onClick={handleLogout}
+              className="flex items-center bg-red-600 hover:bg-red-700 text-white rounded-md text-sm font-semibold transition-colors"
+              style={{
+                gap: '8px',
+                padding: '10px 16px',
+                border: 'none',
+                cursor: 'pointer'
+              }}
+            >
+              <FiLogOut style={{ fontSize: '18px' }} />
+              <span>Đăng xuất</span>
+            </button>
+          </div>
+        )}
       </div>
     </nav>
   );

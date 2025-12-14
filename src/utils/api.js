@@ -81,3 +81,17 @@ export const setAuthToken = (token) => {
         path: '/', 
     });
 }
+
+export const removeAuthToken = () => {
+    Cookies.remove('authToken');
+    localStorage.removeItem('user');
+};
+
+export const getAuthToken = () => {
+    return Cookies.get('authToken');
+};
+
+export const getCurrentUser = () => {
+    const userStr = localStorage.getItem('user');
+    return userStr ? JSON.parse(userStr) : null;
+};

@@ -8,7 +8,7 @@ const HorizontalPostCard = ({ post }) => {
     };
 
     const getPostUrl = () => {
-        return `/${post.category}/${post.id}`;
+        return `/${post.category}/post/${post.id}`;
     };
 
     return (
