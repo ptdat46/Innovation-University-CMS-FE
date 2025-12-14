@@ -459,30 +459,30 @@ export default function AdminDashboard() {
                                                     className="rounded cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
                                                 />
                                             </td>
-                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 cursor-pointer" onClick={() => navigate(`/${post.category}/${post.id}`)}>
+                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 cursor-pointer" onClick={() => navigate(`/${post.category}/post/${post.id}`)}>
                                                 #{post.id}
                                             </td>
-                                            <td className="px-6 py-4 text-sm text-gray-900 cursor-pointer" onClick={() => navigate(`/${post.category}/${post.id}`)}>
+                                            <td className="px-6 py-4 text-sm text-gray-900 cursor-pointer" onClick={() => navigate(`/${post.category}/post/${post.id}`)}>
                                                 <div className="max-w-xs truncate font-medium">
                                                     {post.title}
                                                 </div>
                                             </td>
-                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600 cursor-pointer" onClick={() => navigate(`/${post.category}/${post.id}`)}>
+                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600 cursor-pointer" onClick={() => navigate(`/${post.category}/post/${post.id}`)}>
                                                 {post.writer?.name || 'N/A'}
                                             </td>
-                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600 cursor-pointer" onClick={() => navigate(`/${post.category}/${post.id}`)}>
+                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600 cursor-pointer" onClick={() => navigate(`/${post.category}/post/${post.id}`)}>
                                                 {getCategoryLabel(post.category)}
                                             </td>
-                                            <td className="px-6 py-4 whitespace-nowrap cursor-pointer" onClick={() => navigate(`/${post.category}/${post.id}`)}>
+                                            <td className="px-6 py-4 whitespace-nowrap cursor-pointer" onClick={() => navigate(`/${post.category}/post/${post.id}`)}>
                                                 {getStatusBadge(post.status)}
                                             </td>
-                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600 cursor-pointer" onClick={() => navigate(`/${post.category}/${post.id}`)}>
+                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600 cursor-pointer" onClick={() => navigate(`/${post.category}/post/${post.id}`)}>
                                                 {post.views?.toLocaleString() || 0}
                                             </td>
-                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600 cursor-pointer" onClick={() => navigate(`/${post.category}/${post.id}`)}>
+                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600 cursor-pointer" onClick={() => navigate(`/${post.category}/post/${post.id}`)}>
                                                 {post.likes?.toLocaleString() || 0}
                                             </td>
-                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 cursor-pointer" onClick={() => navigate(`/${post.category}/${post.id}`)}>
+                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 cursor-pointer" onClick={() => navigate(`/${post.category}/post/${post.id}`)}>
                                                 {formatDate(post.created_at)}
                                             </td>
                                         </tr>
