@@ -29,8 +29,8 @@ Cấu hình API base URL trong `src/utils/apiClient.js` (hoặc dùng `.env` v�
 - Trang chủ và trang category: news, events, clubs, student-life
 - Chi tiết bài viết: render nội dung Editor.js, đếm view, like/unlike, hiển thị và tạo bình luận
 - Dashboard: thống kê số bài, lượt xem, lượt thích
-- Writer: tạo/xoá bài viết, upload ảnh đại diện/nội dung
-- Admin: duyệt/xoá bài pending
+- Writer: tạo/xoá bài viết, upload nội dung bài viết (thêm ảnh thumbnail, ảnh trong nội dung vào bài viết)
+- Admin: duyệt bài pendingm, xoá các bài viết không phù hợp
 
 ## Cấu trúc thư mục
 ```
