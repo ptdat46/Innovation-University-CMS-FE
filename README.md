@@ -1,16 +1,44 @@
-# React + Vite
+﻿# Innovation University - Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Frontend React + Vite hiển thị tin tức/bài viết và dashboard.
 
-Currently, two official plugins are available:
+## Yêu cầu
+- Node.js >= 18
+- npm hoặc pnpm
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Cài đặt & chạy
+```bash
+cd Frontend
+npm install
+npm run dev
+```
+Mặc định Vite chạy tại http://localhost:5173.
 
-## React Compiler
+Cấu hình API base URL trong `src/utils/apiClient.js` (hoặc dùng `.env` với `VITE_API_BASE_URL`). Đảm bảo backend chạy `http://localhost:8000` hoặc cập nhật lại.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Scripts
+- `npm run dev`: chạy development server
 
-## Expanding the ESLint configuration
+## Tài khoản mẫu (phù hợp backend seeder)
+- Admin: username `admin` / password `password`
+- Writer: username `writer` / password `password`
+- User: username `user` / password `password`
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Chức năng chính UI
+- Đăng nhập, lưu token, phân quyền (Admin/Writer/User)
+- Trang chủ và trang category: news, events, clubs, student-life
+- Chi tiết bài viết: render nội dung Editor.js, đếm view, like/unlike, hiển thị và tạo bình luận
+- Dashboard: thống kê số bài, lượt xem, lượt thích
+- Writer: tạo/xoá bài viết, upload ảnh đại diện/nội dung
+- Admin: duyệt/xoá bài pending
+
+## Cấu trúc thư mục
+```
+src/
+  pages/        # Home, Category, Dashboard, PostDetail, Auth...
+  components/   # Card, Layout, ProtectedRoute, Editor renderers...
+  hooks/        # Kiểm tra role, token của user.
+  utils/        # apiClient, auth helpers
+  assets/       # logo, styles
+```
+
