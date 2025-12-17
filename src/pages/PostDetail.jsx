@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { api, getAuthToken } from '../utils/api';
 import Nav from '../components/Navbar.jsx';
+import Footer from '../components/Footer.jsx';
 import EditorJsRenderer from '../components/EditorJsRenderer.jsx';
 import banner from '../assets/big-banner.png';
 
@@ -130,7 +131,7 @@ export default function PostDetail() {
                     />
                 </div>
                 <div className="flex justify-center items-center h-screen">
-                    <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-blue-600"></div>
+                    <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-[#c9151b]"></div>
                 </div>
             </div>
         );
@@ -215,7 +216,7 @@ export default function PostDetail() {
                                 className="w-full h-full object-cover"
                             />
                             <div className="absolute top-4 left-4">
-                                <span className="bg-blue-600 text-white text-sm font-bold px-3 py-1 rounded uppercase">
+                                <span className="bg-[#c9151b] text-white text-sm font-bold px-3 py-1 rounded uppercase">
                                     {getCategoryLabel(post.category)}
                                 </span>
                             </div>
@@ -237,7 +238,7 @@ export default function PostDetail() {
 
                         {/* Excerpt */}
                         {post.excerpt && (
-                            <div className="bg-blue-50 border-l-4 border-blue-500 p-4 mb-6">
+                            <div className="bg-[#fde9e9] border-l-4 border-[#c9151b] p-4 mb-6">
                                 <p className="text-gray-700 italic">{post.excerpt}</p>
                             </div>
                         )}
@@ -282,7 +283,7 @@ export default function PostDetail() {
                                 <form onSubmit={handleSubmitComment} className="mb-8">
                                     <div className="flex gap-3">
                                         <div className="flex-shrink-0">
-                                            <div className="w-10 h-10 rounded-full bg-blue-500 flex items-center justify-center text-white font-semibold">
+                                            <div className="w-10 h-10 rounded-full bg-[#c9151b] flex items-center justify-center text-white font-semibold">
                                                 {user?.name?.[0]?.toUpperCase() || 'U'}
                                             </div>
                                         </div>
@@ -291,14 +292,14 @@ export default function PostDetail() {
                                                 value={newComment}
                                                 onChange={(e) => setNewComment(e.target.value)}
                                                 placeholder="Viết bình luận..."
-                                                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
+                                                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#c9151b] focus:border-transparent resize-none"
                                                 rows="3"
                                             />
                                             <div className="mt-2 flex justify-end">
                                                 <button
                                                     type="submit"
                                                     disabled={submittingComment || !newComment.trim()}
-                                                    className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition disabled:opacity-50 disabled:cursor-not-allowed"
+                                                    className="px-6 py-2 bg-[#c9151b] text-white rounded-lg hover:bg-[#a01318] transition disabled:opacity-50 disabled:cursor-not-allowed"
                                                 >
                                                     {submittingComment ? 'Đang gửi...' : 'Gửi bình luận'}
                                                 </button>
@@ -312,7 +313,7 @@ export default function PostDetail() {
                                         Vui lòng{' '}
                                         <button
                                             onClick={() => navigate('/login')}
-                                            className="text-blue-600 hover:text-blue-800 font-semibold"
+                                            className="text-[#c9151b] hover:text-[#a01318] font-semibold"
                                         >
                                             đăng nhập
                                         </button>
@@ -358,12 +359,13 @@ export default function PostDetail() {
                 <div className="mt-8 text-center">
                     <button 
                         onClick={() => navigate(-1)}
-                        className="bg-blue-600 text-white px-8 py-3 rounded-lg hover:bg-blue-700 transition font-semibold"
+                        className="bg-[#c9151b] text-white px-8 py-3 rounded-lg hover:bg-[#a01318] transition font-semibold"
                     >
                         Quay lại danh sách
                     </button>
                 </div>
             </div>
+            <Footer />
         </div>
     );
 }

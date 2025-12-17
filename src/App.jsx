@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Home from './pages/Home.jsx'
+import Introduction from './pages/Introduction.jsx'
 import News from './pages/News.jsx'
 import Events from './pages/Events.jsx'
 import Clubs from './pages/Clubs.jsx'
@@ -18,6 +19,7 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path='/' element={<Home />} />
+        <Route path='/introduction' element={<Introduction />} />
         <Route path='/news' element={<News/>} />
         <Route path='/news/post/:id' element={<PostDetail />} />
         <Route path='/events' element={<Events />} />

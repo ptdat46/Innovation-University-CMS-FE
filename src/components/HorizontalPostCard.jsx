@@ -20,7 +20,7 @@ const HorizontalPostCard = ({ post }) => {
                     alt={post.title} 
                     className="w-full h-full object-cover"
                 />
-                <div className="absolute top-2 left-2 bg-blue-600 text-white text-xs font-bold px-2 py-1 rounded uppercase">
+                <div className="absolute top-2 left-2 bg-[#c9151b] text-white text-xs font-bold px-2 py-1 rounded uppercase">
                     {post.category}
                 </div>
             </div>
@@ -34,7 +34,7 @@ const HorizontalPostCard = ({ post }) => {
                         {post.likes !== undefined && <span>❤️ {post.likes}</span>}
                     </div>
                     <Link to={getPostUrl()}>
-                        <h3 className="text-xl font-bold text-gray-800 mb-2 hover:text-blue-600 transition-colors">
+                        <h3 className="text-xl font-bold text-gray-800 mb-2 hover:text-[#c9151b] transition-colors">
                             {post.title}
                         </h3>
                     </Link>
@@ -46,7 +46,7 @@ const HorizontalPostCard = ({ post }) => {
                 <div className="mt-4 flex justify-end">
                     <Link 
                         to={getPostUrl()} 
-                        className="text-blue-600 font-semibold hover:underline flex items-center"
+                        className="text-[#c9151b] hover:text-[#a01318] font-semibold flex items-center"
                     >
                         Đọc thêm <span className="ml-1">→</span>
                     </Link>

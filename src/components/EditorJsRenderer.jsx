@@ -44,7 +44,7 @@ const EditorJsRenderer = ({ data }) => {
 
             case 'quote':
                 return (
-                    <blockquote className="border-l-4 border-blue-500 pl-4 italic text-gray-700 mb-4 bg-gray-50 py-3">
+                    <blockquote className="border-l-4 border-[#c9151b] pl-4 italic text-gray-700 mb-4 bg-[#fde9e9] py-3">
                         <p dangerouslySetInnerHTML={{ __html: block.data.text }} />
                         {block.data.caption && (
                             <cite className="block mt-2 text-sm text-gray-600">

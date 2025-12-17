@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { api } from '../utils/api';
 import Nav from '../components/Navbar.jsx';
+import Footer from '../components/Footer.jsx';
 import HorizontalPostCard from '../components/HorizontalPostCard.jsx';
 import banner from '../assets/big-banner.png';
 
@@ -58,7 +59,7 @@ export default function News() {
 
             <div className="container mx-auto px-4 py-8 max-w-5xl relative z-10">
                 <div className="mb-8 text-white">
-                    <h1 className="text-3xl font-bold border-l-4 border-blue-500 pl-4">
+                    <h1 className="text-3xl font-bold border-l-4 border-[#c9151b] pl-4">
                         Tin tức & Thông báo
                     </h1>
                     <p className="mt-2 pl-5 text-gray-200">
@@ -68,7 +69,7 @@ export default function News() {
 
                 {loading ? (
                     <div className="flex justify-center items-center h-64">
-                        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-600"></div>
+                        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#c9151b]"></div>
                     </div>
                 ) : (
                     <>
@@ -111,7 +112,7 @@ export default function News() {
                                                 onClick={() => handlePageChange(page)}
                                                 className={`px-4 py-2 rounded border ${
                                                     pagination.current_page === page
-                                                        ? 'bg-blue-600 text-white border-blue-600'
+                                                        ? 'bg-[#c9151b] text-white border-[#c9151b]'
                                                         : 'bg-white text-gray-700 hover:bg-gray-100'
                                                 }`}
                                             >
@@ -143,6 +144,7 @@ export default function News() {
                     </>
                 )}
             </div>
+            <Footer />
         </div>
     );
 }
