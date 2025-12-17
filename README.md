@@ -1,44 +1,77 @@
-﻿# Innovation University - Frontend
+# Innovation University CMS - Frontend Portal
 
-Frontend React + Vite hiển thị tin tức/bài viết và dashboard.
+Giao diện người dùng (Client-side) của hệ thống quản lý đại học, được xây dựng bằng **ReactJS** và **Tailwind CSS**. Ứng dụng cung cấp trải nghiệm mượt mà (SPA) cho Sinh viên, Giảng viên và Quản trị viên tương tác với hệ thống.
 
-## Yêu cầu
-- Node.js >= 18
-- npm hoặc pnpm
+## 🛠 Tech Stack (Công nghệ sử dụng)
+*   **Core:** ReactJS (Vite/Create React App), JavaScript (ES6+)
+*   **Styling:** Tailwind CSS (Utility-first CSS framework)
+*   **Routing:** React Router DOM v6
+*   **State Management:** React Context API / Redux Toolkit (tùy chọn trong code)
+*   **HTTP Client:** Axios (Xử lý API requests & Interceptors)
+*   **Icons:** React Icons / Heroicons
 
-## Cài đặt & chạy
-```bash
-cd Frontend
+## 📂 Cấu trúc Dự ántext
+Innovation-University-CMS-FE/
+├── src/
+│   ├── assets/          # Hình ảnh, fonts
+│   ├── components/      # Các UI Components tái sử dụng (Button, Modal, Navbar...)
+│   ├── pages/           # Các màn hình chính (LoginPage, Dashboard, CourseReg...)
+│   ├── layouts/         # Bố cục trang (AdminLayout, StudentLayout)
+│   ├── services/        # Cấu hình Axios và gọi API (authService, courseService...)
+│   ├── context/         # AuthContext (Lưu trạng thái đăng nhập)
+│   └── App.js           # Router chính
+├── tailwind.config.js   # Cấu hình theme Tailwind
+└── package.json         # Danh sách thư viện
+
+## ✨ Chức năng Chính (Frontend Features)
+### Dashboard:
+
+Biểu đồ thống kê cho Admin.
+
+Lịch học và thông báo cho Sinh viên.
+
+Cổng Sinh viên:
+
+Tra cứu điểm thi, lịch sử học tập.
+
+Đăng ký môn học (Giao diện chọn lớp, xem sĩ số thực).
+
+Cổng Giảng viên:
+
+Quản lý danh sách lớp chủ nhiệm/giảng dạy.
+
+Nhập điểm online.
+
+### UI/UX:
+
+Thiết kế Responsive (Mobile-friendly).
+
+🚀 Hướng dẫn Cài đặt (Installation Guide)
+Yêu cầu hệ thống
+Node.js (Phiên bản LTS, khuyến nghị v20)
+
+NPM hoặc Yarn
+
+Bước 1: Clone dự án
+```
+git clone [https://github.com/ptdat46/Innovation-University-CMS-FE.git](https://github.com/ptdat46/Innovation-University-CMS-FE.git)
+cd Innovation-University-CMS-FE
+```
+Bước 2: Cài đặt thư viện (Dependencies)
+```
 npm install
+# hoặc nếu dùng yarn:
+yarn install
+```
+Bước 3: Cấu hình kết nối API
+Tạo file .env tại thư mục gốc (ngang hàng package.json) để trỏ về Backend Laravel đang chạy:
+```
+# Dùng Vite
+VITE_API_URL=[http://127.0.0.1:8000/api](http://127.0.0.1:8000/api)
+```
+Bước 4: Khởi chạy ứng dụng (Development Mode)
+```
 npm run dev
+Truy cập trình duyệt tại: http://localhost:5137 (hoặc port hiển thị trên terminal).
 ```
-Mặc định Vite chạy tại http://localhost:5173.
-
-Cấu hình API base URL trong `src/utils/apiClient.js` (hoặc dùng `.env` với `VITE_API_BASE_URL`). Đảm bảo backend chạy `http://localhost:8000` hoặc cập nhật lại.
-
-## Scripts
-- `npm run dev`: chạy development server
-
-## Tài khoản mẫu (phù hợp backend seeder)
-- Admin: username `admin` / password `password`
-- Writer: username `writer` / password `password`
-- User: username `user` / password `password`
-
-## Chức năng chính UI
-- Đăng nhập, lưu token, phân quyền (Admin/Writer/User)
-- Trang chủ và trang category: news, events, clubs, student-life
-- Chi tiết bài viết: render nội dung Editor.js, đếm view, like/unlike, hiển thị và tạo bình luận
-- Dashboard: thống kê số bài, lượt xem, lượt thích
-- Writer: tạo/xoá bài viết, upload nội dung bài viết (thêm ảnh thumbnail, ảnh trong nội dung vào bài viết)
-- Admin: duyệt bài pendingm, xoá các bài viết không phù hợp
-
-## Cấu trúc thư mục
-```
-src/
-  pages/        # Home, Category, Dashboard, PostDetail, Auth...
-  components/   # Card, Layout, ProtectedRoute, Editor renderers...
-  hooks/        # Kiểm tra role, token của user.
-  utils/        # apiClient, auth helpers
-  assets/       # logo, styles
-```
-
+Lưu ý: Đảm bảo Backend Laravel đang chạy (php artisan serve) trước khi đăng nhập trên Frontend để tránh lỗi kết nối mạng.
