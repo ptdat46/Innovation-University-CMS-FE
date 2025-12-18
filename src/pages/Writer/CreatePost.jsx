@@ -21,12 +21,15 @@ export default function CreatePost() {
     const [error, setError] = useState('');
     const [uploadingFeatured, setUploadingFeatured] = useState(false);
     const [featuredImagePreview, setFeaturedImagePreview] = useState('');
+    const [uploadingPdf, setUploadingPdf] = useState(false);
+    const [pdfName, setPdfName] = useState('');
 
     const [formData, setFormData] = useState({
         title: '',
         excerpt: '',
         category: 'news',
         featured_image: '',
+        pdf_file: '',
     });
 
     useEffect(() => {
@@ -152,6 +155,45 @@ export default function CreatePost() {
             setError(err.message || 'Lỗi khi upload ảnh');
         } finally {
             setUploadingFeatured(false);
+        }
+    };
+
+    const handlePdfUpload = async (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        if (file.type !== 'application/pdf') {
+            setError('Vui lòng chọn file PDF');
+            return;
+        }
+
+        if (file.size > 10 * 1024 * 1024) {
+            setError('Kích thước file không được vượt quá 10MB');
+            return;
+        }
+
+        setUploadingPdf(true);
+        setError('');
+
+        try {
+            const formDataUpload = new FormData();
+            formDataUpload.append('file', file);
+
+            const response = await api.post('/writer/uploadPdf', formDataUpload);
+
+            if (response.success) {
+                setFormData(prev => ({
+                    ...prev,
+                    pdf_file: response.data.url
+                }));
+                setPdfName(response.data.original_name || file.name);
+            } else {
+                setError(response.error || 'Lỗi khi upload file PDF');
+            }
+        } catch (err) {
+            setError(err.message || 'Lỗi khi upload file PDF');
+        } finally {
+            setUploadingPdf(false);
         }
     };
 
@@ -296,6 +338,26 @@ export default function CreatePost() {
                                         <div className="mt-2">
                                             <img src={featuredImagePreview} alt="Preview" className="w-32 h-32 object-cover rounded-lg" />
                                         </div>
+                                    )}
+                                </div>
+
+                                <div className="md:col-span-2">
+                                    <label htmlFor="pdf_file" className="block text-sm font-medium text-gray-700 mb-2">
+                                        File PDF đính kèm
+                                    </label>
+                                    <input
+                                        type="file"
+                                        id="pdf_file"
+                                        accept="application/pdf"
+                                        onChange={handlePdfUpload}
+                                        disabled={uploadingPdf}
+                                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-green-50 file:text-green-700 hover:file:bg-green-100 disabled:opacity-50"
+                                    />
+                                    {uploadingPdf && (
+                                        <p className="mt-2 text-sm text-gray-600">Đang upload PDF...</p>
+                                    )}
+                                    {pdfName && (
+                                        <p className="mt-2 text-sm text-green-600">Đã chọn: {pdfName}</p>
                                     )}
                                 </div>
                             </div>

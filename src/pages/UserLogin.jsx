@@ -4,7 +4,7 @@ export default function UserLogin() {
     return (
         <Login 
             role="user"
-            title="Đăng nhập"
+            title="Đăng nhập cho Người dùng"
             apiEndpoint="/login"
         />
     );

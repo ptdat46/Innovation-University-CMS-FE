@@ -93,7 +93,8 @@ export default function Login({ role = 'user', title, apiEndpoint }) {
                     justifyContent: 'center'
                 }}
             >
-                <h1 className="text-4xl font-bold mb-2">Đăng nhập</h1>
+
+                <h1 className="text-4xl font-bold mb-2">{title || 'Đăng nhập'}</h1>
             </div>
 
             {/* Login Form Section */}

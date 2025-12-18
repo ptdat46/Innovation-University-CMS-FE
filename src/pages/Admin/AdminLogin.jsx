@@ -4,7 +4,7 @@ export default function AdminLogin() {
     return (
         <Login
             role="admin"
-            title="Đăng nhập dành cho Admin"
+            title="Đăng nhập cho Quản trị viên"
             apiEndpoint="/admin/login"
         />
     );

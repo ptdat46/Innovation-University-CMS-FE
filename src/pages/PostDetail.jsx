@@ -248,6 +248,28 @@ export default function PostDetail() {
                             <EditorJsRenderer data={post.content} />
                         </div>
 
+                        {/* PDF Viewer */}
+                        {post.pdf_file && (
+                            <div className="mt-8">
+                                <h3 className="text-xl font-bold mb-4">Tài liệu đính kèm</h3>
+                                <iframe
+                                    src={post.pdf_file}
+                                    className="w-full h-[600px] border border-gray-300 rounded-lg"
+                                    title="PDF Viewer"
+                                ></iframe>
+                                <div className="mt-2 text-right">
+                                    <a 
+                                        href={post.pdf_file} 
+                                        target="_blank" 
+                                        rel="noopener noreferrer"
+                                        className="text-[#c9151b] hover:underline font-medium"
+                                    >
+                                        Mở trong tab mới
+                                    </a>
+                                </div>
+                            </div>
+                        )}
+
                         {/* Like and View Stats */}
                         <div className="mt-8 pt-6 border-t border-gray-200">
                             <div className="flex items-center justify-between">

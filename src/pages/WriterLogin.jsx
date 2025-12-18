@@ -4,7 +4,7 @@ export default function WriterLogin() {
     return (
         <Login
             role="writer"
-            title="Đăng nhập dành cho nhà văn"
+            title="Đăng nhập cho Người viết bài"
             apiEndpoint="/writer/login"
         />
     );
